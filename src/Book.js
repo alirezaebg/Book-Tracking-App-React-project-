@@ -2,14 +2,20 @@ import React, { Component } from 'react'
 
 class Book extends Component {
 
+    handleChange = (book, shelf) => {
+        this.props.shelfChange(book, shelf)
+    }
+
     render() {
-        const { imageUrl, title, authors } = this.props
+        const { book } = this.props
         return (
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageUrl})` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     <div className="book-shelf-changer">
-                        <select>
+                        <select onChange={(e) => {
+                            this.handleChange(book, e.target.value)
+                        }}>
                             <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
@@ -18,8 +24,8 @@ class Book extends Component {
                         </select>
                     </div>
                 </div>
-                <div className="book-title">{title}</div>
-                <div className="book-authors">{authors}</div>
+                <div className="book-title">{book.title}</div>
+                <div className="book-authors">{book.authors}</div>
             </div>
         )
     }
