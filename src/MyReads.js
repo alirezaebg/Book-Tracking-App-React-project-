@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Bookshelf from './Bookshelf'
+import { Link } from 'react-router-dom'
 
 class MyReads extends Component {
 
@@ -11,13 +12,13 @@ class MyReads extends Component {
                     <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                    <Bookshelf title = 'Currently Reading' shelf = 'currentlyReading' books = {bookList} shelfChange = {shelfChange} />
-                    <Bookshelf title = 'Want To Read' shelf = 'wantToRead' books = {bookList} shelfChange = {shelfChange} />
-                    <Bookshelf title = 'Read' shelf = 'read' books = {bookList} shelfChange = {shelfChange} />
+                    <Bookshelf title='Currently Reading' shelf='currentlyReading' books={bookList} shelfChange={shelfChange} />
+                    <Bookshelf title='Want To Read' shelf='wantToRead' books={bookList} shelfChange={shelfChange} />
+                    <Bookshelf title='Read' shelf='read' books={bookList} shelfChange={shelfChange} />
                 </div>
-                {/* <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-            </div> */}
+                <div className="open-search">                  
+                    <Link to='/search'><button>Add a book</button></Link>
+                </div>
             </div>
         )
     }
