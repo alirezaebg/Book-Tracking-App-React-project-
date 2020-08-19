@@ -2,32 +2,58 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
+import PropTypes from 'prop-types'
 
 class Search extends Component {
 
+    static propTypes = {
+        shelfChange: PropTypes.func.isRequired,
+        books: PropTypes.array.isRequired
+    }
+
     state = {
-        bookList: []
+        query: '',
+        bookList: [],
+        itemNotFound: false,
     }
 
     handleChange = (query) => {
-        if (query) {
-            BooksAPI.search(query)
-                .then((bookList) => {
-                    console.log(bookList)
-                    this.setState(() => ({
-                        bookList
-                    }))
-                })
-                .catch(err => console.log("empty query"))
-        }
 
+        this.setState({ query })
+
+        setTimeout(() => {
+            this.fetchBooks(query)
+        }, 200)
+    }
+
+    fetchBooks = (query) => {
+        if (query) {
+            BooksAPI.search(query.trim())
+                .then((bookList) => {
+                    (bookList.length > 0) ?
+                        this.setState(() => ({
+                            bookList,
+                            itemNotFound: false
+                        })) :
+                        this.setState(() => ({
+                            bookList: [],
+                            itemNotFound: true
+                        }))
+                })
+        }
+        else {
+            this.setState(() => ({ bookList: [], itemNotFound: false }))
+        }
+    }
+
+    findShelf = (id) => {
+        const existing = this.props.books.filter(book => book.id === id)
+        return (existing.length > 0) ? existing[0].shelf : 'none'
     }
 
     render() {
-
-        const { bookList } = this.state
-        const { shelfChange, bookID } = this.props
-        console.log(bookID)
+        const { query, bookList } = this.state
+        const { shelfChange } = this.props
 
         return (
             (
@@ -44,24 +70,25 @@ class Search extends Component {
                       */}
                             <input
                                 type="text" placeholder="Search by title or author"
+                                value={query}
                                 onChange={(e) => this.handleChange(e.target.value)}
                             />
 
                         </div>
                     </div>
                     <div className="search-books-results">
-                        {(typeof bookList.length !== undefined) && (
+                        {(!this.state.itemNotFound) ? (
                             <ol className="books-grid">
                                 {bookList.map((book) => (
                                     <li key={book.id}>
                                         <Book
                                             book={book}
-                                            shelf = {book.shelf}
+                                            shelf={this.findShelf(book.id)}
                                             shelfChange={shelfChange}
                                         />
                                     </li>
                                 ))}
-                            </ol>)
+                            </ol>) : (<p>No search result found!</p>)
                         }
                     </div>
                 </div>

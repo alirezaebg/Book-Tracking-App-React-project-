@@ -49,7 +49,7 @@ class BooksApp extends React.Component {
         <Route path='/search' render={() => (
           <Search
             shelfChange = {this.shelfChange}
-            bookID = {this.state.books.map(book => book.id)}
+            books = {this.state.books}
           />
         )} />
 
