@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
+import propTypes from 'prop-types'
 
 class Book extends Component {
+
+    static propTypes = {
+        book: propTypes.object.isRequired,
+        shelf: propTypes.string.isRequired,
+        shelfChange: propTypes.func.isRequired
+    }
 
     handleChange = (book, shelf) => {
         this.props.shelfChange(book, shelf)
@@ -11,7 +18,7 @@ class Book extends Component {
         return (
             <div className="book">
                 <div className="book-top">
-                    {book.imageLinks && (
+                    {book.imageLinks && (  //filter out the book if there is no thumbnail
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     )}                 
                     <div className="book-shelf-changer">
@@ -27,7 +34,7 @@ class Book extends Component {
                     </div>
                 </div>
                 <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.authors}</div>
+                {book.authors && (<div className="book-authors">{book.authors}</div>)}
             </div>
         )
     }
