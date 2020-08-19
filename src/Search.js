@@ -18,9 +18,17 @@ class Search extends Component {
     }
 
     // function that uses BooksAPI search method
-    handleChange = (e) => {
-        const query = e.target.value;
+    handleChange = (event) => {
+        const query = event.target.value;
         this.setState({ query })
+        // the following will make sure that the API call is made with a delay after the user has stopped typing in the input field
+        setTimeout(() => {                     
+            this.fetchBooks(this.state.query)
+        }, 300)
+
+    }
+
+    fetchBooks = (query) => {      
         if (query) {
             BooksAPI.search(query.trim())
                 .then((bookList) => {
