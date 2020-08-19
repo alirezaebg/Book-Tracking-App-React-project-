@@ -12,21 +12,15 @@ class Search extends Component {
     }
 
     state = {
-        query: '',
-        bookList: [],
-        itemNotFound: false,
+        query: '',             //input query (search term)
+        bookList: [],          //list of book that the search result returns
+        itemNotFound: false,   //If no book is found or search result throws an error
     }
 
-    handleChange = (query) => {
-
+    // function that uses BooksAPI search method
+    handleChange = (e) => {
+        const query = e.target.value;
         this.setState({ query })
-
-        setTimeout(() => {
-            this.fetchBooks(query)
-        }, 200)
-    }
-
-    fetchBooks = (query) => {
         if (query) {
             BooksAPI.search(query.trim())
                 .then((bookList) => {
@@ -46,6 +40,7 @@ class Search extends Component {
         }
     }
 
+    // function to determine the book shelf (set to 'none' if never been chosen)
     findShelf = (id) => {
         const existing = this.props.books.filter(book => book.id === id)
         return (existing.length > 0) ? existing[0].shelf : 'none'
@@ -71,7 +66,7 @@ class Search extends Component {
                             <input
                                 type="text" placeholder="Search by title or author"
                                 value={query}
-                                onChange={(e) => this.handleChange(e.target.value)}
+                                onChange={this.handleChange}
                             />
 
                         </div>

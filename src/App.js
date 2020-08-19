@@ -25,6 +25,7 @@ class BooksApp extends React.Component {
       })
   }
 
+  // function to handle shelf change for each book
   shelfChange = (book, shelf) => {
     BooksAPI.update(book, shelf)
       .then(this.updateShelf)
@@ -33,7 +34,6 @@ class BooksApp extends React.Component {
   updateShelf = () => {
     BooksAPI.getAll()
       .then(books => {
-        console.log(books)
         this.setState(() => ({
           books
         }))

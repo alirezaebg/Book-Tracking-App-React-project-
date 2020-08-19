@@ -8,7 +8,7 @@ class Book extends Component {
         shelf: propTypes.string.isRequired,
         shelfChange: propTypes.func.isRequired
     }
-
+    // function to respond to changing of the book shelf
     handleChange = (book, shelf) => {
         this.props.shelfChange(book, shelf)
     }
@@ -18,11 +18,12 @@ class Book extends Component {
         return (
             <div className="book">
                 <div className="book-top">
-                    {book.imageLinks && (  //filter out the book if there is no thumbnail
+                    {/* filter out the book if there is no thumbnail */}
+                    {book.imageLinks && (
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     )}                 
                     <div className="book-shelf-changer">
-                        <select value={shelf} onChange={(e) => {
+                        <select value={shelf} onChange={(e) => { // value={shelf} will make sure that default value mathces the book shelf
                             this.handleChange(book, e.target.value)
                         }}>
                             <option value="move" disabled>Move to...</option>
@@ -34,7 +35,8 @@ class Book extends Component {
                     </div>
                 </div>
                 <div className="book-title">{book.title}</div>
-                {book.authors && (<div className="book-authors">{book.authors}</div>)}
+                {/* filter out if the author names are not provided */}
+                {book.authors && (<div className="book-authors">{book.authors}</div>)} 
             </div>
         )
     }
