@@ -1,13 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 
 class Search extends Component {
 
     state = {
-        query: ''
+        bookList: []
+    }
+
+    handleChange = (query) => {
+        if (query) {
+            BooksAPI.search(query)
+                .then((bookList) => {
+                    console.log(bookList)
+                    this.setState(() => ({
+                        bookList
+                    }))
+                })
+                .catch(err => console.log("empty query"))
+        }
+
     }
 
     render() {
+
+        const { bookList } = this.state
+        const { shelfChange, bookID } = this.props
+        console.log(bookID)
+
         return (
             (
                 <div className="search-books">
@@ -22,13 +43,26 @@ class Search extends Component {
                         you don't find a specific author or title. Every search is limited by search terms.
                       */}
                             <input
-                                type="text" placeholder="Search by title or author"                           
+                                type="text" placeholder="Search by title or author"
+                                onChange={(e) => this.handleChange(e.target.value)}
                             />
 
                         </div>
                     </div>
                     <div className="search-books-results">
-                        <ol className="books-grid"></ol>
+                        {(typeof bookList.length !== undefined) && (
+                            <ol className="books-grid">
+                                {bookList.map((book) => (
+                                    <li key={book.id}>
+                                        <Book
+                                            book={book}
+                                            shelf = {book.shelf}
+                                            shelfChange={shelfChange}
+                                        />
+                                    </li>
+                                ))}
+                            </ol>)
+                        }
                     </div>
                 </div>
             )
