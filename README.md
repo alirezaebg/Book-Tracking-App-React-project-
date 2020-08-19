@@ -36,12 +36,13 @@ To get started developing right away:
 Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
 
 ## React Components
-|__ App__
-	     |__MyReads__
-		 |			 |__Bookshelf__
-		 |__Search_________________|__Book
-			   
+- App 
+- MyReads
+- Search
+- Bookshelf
+- Book
 
+			   
 ## Backend Server
 
 To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
